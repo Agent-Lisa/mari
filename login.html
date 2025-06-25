@@ -9,6 +9,8 @@
         body {
             font-family: arial, sans-serif;
             background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
         }
         .login-form {
             width: 300px;
@@ -50,9 +52,54 @@
             margin-top: 20px;
             color: #4caf50;
         }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 100vh;
+            background-color: #333;
+            padding: 20px;
+            display: none;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .sidebar ul li a:hover {
+            color: #ccc;
+        }
+        .toggle-sidebar {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    <button class="toggle-sidebar">Toggle Sidebar</button>
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Orders</a></li>
+            <li><a href="#">Settings</a></li>
+        </ul>
+    </div>
     <div class="login-form">
         <h2>mobile shop login</h2>
         <form id="login-form">
@@ -63,18 +110,18 @@
         <a href="#">forgot password?</a>
     </div>
     <script>
-        const loginform = document.getelementbyid('login-form');
-        loginform.addeventlistener('submit', (e) => {
-            e.preventdefault();
-            const username = document.getelementbyid('username').value;
-            const password = document.getelementbyid('password').value;
+        const loginform = document.getElementById('login-form');
+        loginform.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
             // call api to verify credentials
             fetch('./api/login', {
                 method: 'post',
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: json.stringify({ username, password })
+                body: JSON.stringify({ username, password })
             })
             .then((response) => response.json())
             .then((data) => {
@@ -88,6 +135,11 @@
             .catch((error) => {
                 console.error(error);
             });
+        });
+        const toggleSidebar = document.querySelector('.toggle-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.style.display = sidebar.style.display === 'block' ? 'none' : 'block';
         });
     </script>
 </body>
